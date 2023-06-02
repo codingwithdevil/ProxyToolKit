@@ -7,10 +7,10 @@ Retrive data is usefull when the module is using in a webapp or project***
 
 ### Stable version <br>
 
-### Features :<br>
-    **[+]** _User can scrape 3k+ proxies_<br>
-    **[+]** _No Proxy Checking limitations_<br>
-    **[+]** _High Speed_ <br>
-    **[+]** _Saving Files by creating folder and named by using type & Current time including sec & millisec_ <br>
-    **[+]** _Returning Response or Saving Feature Available_<br>
-    **[+]** _completely Free_ <br>
+### Features : <br>
+    [+] User can scrape 3k+ proxies<br>
+    [+] No Proxy Checking limitations<br>
+    [+] High Speed <br>
+    [+] Saving Files by creating folder and named by using type & Current time including sec & millisec <br>
+    [+] Returning Response or Saving Feature Available<br>
+    [+] completely Free <br>
