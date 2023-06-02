@@ -5,7 +5,7 @@
 <br>
 ## Stable version <br>
 
-### Features :<br>
+### Features : <br>
 #####    [+]  User can scrape 3k+ proxies<br>
 #####    [+]  No Proxy Checking limitations<br>
 #####    [+]  High Speed <br>
@@ -13,10 +13,10 @@
 #####    [+]  Returning Response or Saving Feature Available<br>
 #####    [+]  completely Free <br>
 
-### [+] Examples
+### [+] Examples <br>
 
 ##### Scraping: 
-<br>
+
 ```
 #Import Module
 from ProxyToolKit.Scraper import Scraper
@@ -29,8 +29,8 @@ scraper = Scraper(
 scraper.scrape() #Run 
 
 ``` 
-<br>
-##### Checking: <br>
+
+##### Checking: 
 ```
 #Import Module
 from ProxyToolKit.Checker import checker
@@ -60,7 +60,7 @@ scraper = checker(
 scraper.check() #Run 
 
 ```
-##### Returning Response: <br>
+##### Returning Response: 
 ```
 from ProxyToolKit.Scraper import Scraper
 
@@ -73,7 +73,7 @@ proxys = scraper.scrape() # Run
 print(proxys)
 
 ```
-<br>
+
 ### [+] Support :-
 
 <a href="https://t.me/https://t.me/CodingWithDevil_yt"><img src="https://img.shields.io/badge/telegram-D14836?color=2CA5E0&style=for-the-badge&logo=telegram&logoColor=white"></a>
@@ -82,4 +82,4 @@ print(proxys)
 <a href="https://t.me/CodingWithDevil"><img src="https://img.shields.io/badge/Telegram-Group-blue"></a>
 <a href="https://t.me/Codingwithdevil_group_chat"><img src="https://img.shields.io/badge/Telegram-Group%20Chat-blue"></a>
 
-<br>
+
