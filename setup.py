@@ -2,13 +2,15 @@ from setuptools import setup, find_packages
 
 setup(
     name='ProxyToolKit',
-    version='1.0.0',
+    version='0.1',
+    license='MIT',
     author='Coding With Devil',
     author_email='codingwithdevil@gmail.com',
     description='Proxy Scraper and Checker',
     long_description='''With this module you can easly scrape and check proxy without any limitations ,also you can use this to webapps ''',
     long_description_content_type='text/markdown',
     url='https://github.com/codingwithdevil/ProxyToolKit.git',
+    download_url='https://github.com/codingwithdevil/ProxyToolKit/archive/refs/tags/v0.1.tar.gz',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
