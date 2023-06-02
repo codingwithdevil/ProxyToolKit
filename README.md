@@ -7,12 +7,12 @@
 ## Latest version : V.01 <br>
 
 ### Features : <br>
-##### &nbsp; [+]  User can scrape 3k+ proxies<br>
-##### &nbsp; [+]  No Proxy Checking limitations<br>
-##### &nbsp; [+]  High Speed <br>
-##### &nbsp; [+]  Saving Files by creating folder and named by using type & Current time including sec & millisec <br>
-##### &nbsp; [+]  Returning Response or Saving Feature Available<br>
-##### &nbsp; [+]  completely Free <br>
+##### &emsp; [+]  User can scrape 3k+ proxies<br>
+##### &emsp; [+]  No Proxy Checking limitations<br>
+##### &emsp; [+]  High Speed <br>
+##### &emsp; [+]  Saving Files by creating folder and named by using type & Current time including sec & millisec <br>
+##### &emsp; [+]  Returning Response or Saving Feature Available<br>
+##### &emsp; [+]  completely Free <br>
 
 ### Installalion : <br>
 ``` 
