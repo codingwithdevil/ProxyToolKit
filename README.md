@@ -3,9 +3,10 @@
 ### [+] Usage
 ***This Module is used to scrape and check porxies without any limitations, Users can retrive data or save data according to there choice,Saving Data Stored in currently working Dictonary Retrive data is usefull when the module is using in a webapp or project***
 <br>
-### Stable version <br>
+## Stable version <br>
 
-### Features : <br>
+### Features :
+<br>
 #####    [+]  User can scrape 3k+ proxies<br>
 #####    [+]  No Proxy Checking limitations<br>
 #####    [+]  High Speed <br>
@@ -14,26 +15,28 @@
 #####    [+]  completely Free <br>
 
 ### [+] Examples
+
 ##### Scraping: 
+<br
 ```
-# Import Module
+#Import Module
 from ProxyToolKit.Scraper import Scraper
 
-# Call Class 
+#Call Class 
 scraper = Scraper(
-    proxy_type='https', # Type of the proxy you want 
-    is_web=False, # is_web True this class will retun responce else Save Scraped Proxys
+    proxy_type='https', #Type of the proxy you want 
+    is_web=False, #is_web True this class will retun responce else Save Scraped Proxys
 )
-scraper.scrape() # Run 
+scraper.scrape() #Run 
 
 ``` 
 <br>
 ##### Checking: <br>
 ```
-# Import Module
+#Import Module
 from ProxyToolKit.Checker import checker
 
-# these are the three types of valid proxy checker input
+#these are the three types of valid proxy checker input
 
 proxy = ['proxy:port','proxy:port','proxy:port','proxy:port'] 
 
@@ -48,14 +51,14 @@ proxy:port
 
 proxy = '/home/user/somewhere/proxt.txt'
 
-# Call Class 
+#Call Class 
 scraper = checker(
-    proxys=proxy,# here You define  proxy if You are providing a path then turn "is_path = True" ,If you are giving a  list or string "is_path=False"
-    proxy_type='https', # Type of the proxy you want 
-    is_web=False, # is_web True this class will retun responce else Save Scraped Proxys
-    is_path=True,
+    proxys=proxy, #here You define  proxy if You are providing a path then turn "is_path = True" ,If you are giving a  list or string "is_path=False"
+    proxy_type='https', #Type of the proxy you want 
+    is_web=False, #is_web True this class will retun responce else Save Scraped Proxys
+    is_path=True,#Turn to true if ur using a path to proxy
     )
-scraper.check() # Run 
+scraper.check() #Run 
 
 ```
 ##### Returning Response: <br>
