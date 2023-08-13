@@ -16,6 +16,7 @@ class checker():
         proxy_type='',
         is_path:bool=False,
         is_web:bool=False,
+        thread = 0 # for default
         ):
         
         self.session = rqs.session()
@@ -25,6 +26,8 @@ class checker():
         self.proxy_list_type = None
         self.all = ['http','https','socks4','socks5']
         self.is_web = is_web
+        self.thread = thread
+        
         if not self.is_web:
             self.app = QApplication([])
         self.ct =dt.now().isoformat()
@@ -45,7 +48,7 @@ class checker():
                 self.proxy_list_type = self.det_type(proxys)
                 if self.proxy_list_type == str:
                     self.proxy_list = self.convert_text_to_list(self.proxy_list)
-                elif self.proxy_list_type ==tuple:
+                elif self.proxy_list_type ==tuple or self.proxy_list_type == list:
                     self.proxy_list =proxys
                 else: 
                     raise InavalidProxyData()
@@ -131,13 +134,7 @@ class checker():
                     
         else:
             raise InavalidProxyData()
-            
-        
-        
-            
-            
-        
-                
+                       
             
     def threader(self,proxys):
         queue = Queue.Queue()
@@ -147,10 +144,11 @@ class checker():
         proxy_data =[]
         for proxy in proxys:
             queue.put(proxy)
+        thread = self.thread if self.thread != 0 else len(proxys)//4
 
         while not queue.empty():
             queuelock.acquire()
-            for workers in range(len(proxys)//4):
+            for workers in range(thread):
                 t = threading.Thread(target=self.main, args=(queue,))
                 t.setDaemon(True)
                 t.start()

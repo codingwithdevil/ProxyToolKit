@@ -1,11 +1,10 @@
 import requests as rqs
 from bs4 import BeautifulSoup
-from .utlis.agents import user_agents
-from .Exceptions import *
+from utlis.agents import user_agents
+from Exceptions import *
 import random,os
 from datetime import datetime as dt
 from concurrent.futures import ThreadPoolExecutor
-from .Exceptions import *
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
 class Scraper():
@@ -73,6 +72,21 @@ class Scraper():
         if not self.is_web:
             QMessageBox.information(None,'Message',f'Scraping "{self.proxy_type}" Proxy Saved SuccesFully, Path : {fp}')
             pass
+    def __convert_str_to_list__(self,data:str):
+        new_data = []
+        if data:
+            data = data.replace('\r','\n')
+            data = data.split('\n')
+            
+            # print(len(data))
+            for i  in data:
+                # print(i)
+                # print(len(i))
+                if len(i) !=0:
+                    new_data.append(i)
+            
+            # print(new_data)
+        return new_data
 
     def scrape(self):
         if self.proxy_type:
@@ -119,6 +133,7 @@ class Scraper():
                 res  = proxy.result()
                 
         if self.is_web:
-            return res
+            proxy = self.__convert_str_to_list__(res)
+            return proxy
         else:
             self.save_data(res)
