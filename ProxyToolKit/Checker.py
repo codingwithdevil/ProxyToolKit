@@ -1,14 +1,14 @@
 from PyQt5.QtWidgets import QApplication, QMessageBox
 import random,requests as rqs,os,threading
-from .utlis.agents import user_agents
-from .Exceptions import *
+from utlis.agents import user_agents
+from Exceptions import *
 import queue as Queue
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime as dt
 
 
 
-class checker():
+class Checker():
     url = 'https://api.ipify.org/'
     def __init__(
         self,
@@ -16,9 +16,10 @@ class checker():
         proxy_type='',
         is_path:bool=False,
         is_web:bool=False,
-        thread = 0 # for default
+        thread:int = 0 ,
+        is_gui:bool = False,
         ):
-        
+        # print(proxys)
         self.session = rqs.session()
         self.session.headers.update({("User-Agent", random.choice(user_agents))})
         self.proxy_list = proxys
@@ -27,13 +28,20 @@ class checker():
         self.all = ['http','https','socks4','socks5']
         self.is_web = is_web
         self.thread = thread
-        
+        self.is_gui = is_gui
         if not self.is_web:
             self.app = QApplication([])
         self.ct =dt.now().isoformat()
-        
+        self.temp = 'temp.txt'
+        self.prog_temp = 'prog_temp.txt'
+        self.checked_count = 1
+        if self.is_gui :
+            with open(self.temp,'w') as f:
+                f.close()
+            with open(self.prog_temp,'w') as f:
+                f.close()
+
         if proxys and is_path:
-            
             if os.path.exists(proxys):
                 with open(proxys,'r') as f:
                     self.proxy_list = f.readlines()
@@ -48,6 +56,7 @@ class checker():
                 self.proxy_list_type = self.det_type(proxys)
                 if self.proxy_list_type == str:
                     self.proxy_list = self.convert_text_to_list(self.proxy_list)
+                    # print(self.proxy_list)
                 elif self.proxy_list_type ==tuple or self.proxy_list_type == list:
                     self.proxy_list =proxys
                 else: 
@@ -56,12 +65,16 @@ class checker():
             
     
     def convert_text_to_list(self,string:str):
+        proxy_list = []
         proxys = string.replace('\r','')
         proxys = proxys.split('\n')
         for proxy in proxys:
             if len(proxy) <5 :
                 proxys.remove(proxy)
-        return proxys       
+            else:
+                proxy_list.append(proxy)
+        self.proxy_list_type = list
+        return proxy_list
     
     
     def det_type(self,proxy):  
@@ -95,8 +108,8 @@ class checker():
             f.write(data+'\n')
             
     def check(self):
-
-        if self.proxy_list_type == list and len(self.proxy_list) > 0:
+        # print('hello')
+        if self.proxy_list_type == list or self.proxy_list_type ==tuple and len(self.proxy_list) > 0:
             path = os.getcwd()
             fp= os.path.join(path,'Proxys')
             
@@ -107,6 +120,7 @@ class checker():
                     QMessageBox.information(None,'Message',f'Start Checking Proxy Using "{self.proxy_type}" protocol, Note: Checked Proxys Auto save to the path : {fp}')
                     pass
                 with  ThreadPoolExecutor(max_workers=1) as executer:
+                    # print('im reached thread')
                     proxy_type = self.proxy_type
                     self.create_connector(proxy_type)
                     arg  = self.proxy_list
@@ -116,6 +130,7 @@ class checker():
                         return res
                     
             else:
+
                 if not self.is_web:
                     QMessageBox.information(None,'Message',f'Start Checking Proxy Using "HTTPS" protocols, Due to no mension of protocol or inavlid Protocol,, Note: Checked Proxys Auto save to the path : {fp}') 
                     pass
@@ -124,7 +139,7 @@ class checker():
                 proxy_type ='https'
                 with  ThreadPoolExecutor(max_workers=1) as executer:
                     print('trying to create typer')
-                    self.create_connector(proxy_type)
+                    self.create_connector(self.proxy_type)
                     print(self.proxy_type_connector)
                     arg  = self.proxy_list
                     proxy_res = executer.submit(self.threader,arg)
@@ -137,6 +152,7 @@ class checker():
                        
             
     def threader(self,proxys):
+        # print('im on threader def')
         queue = Queue.Queue()
         queuelock = threading.Lock()
         threads = []
@@ -145,14 +161,17 @@ class checker():
         for proxy in proxys:
             queue.put(proxy)
         thread = self.thread if self.thread != 0 else len(proxys)//4
+        # print(thread)
 
         while not queue.empty():
             queuelock.acquire()
             for workers in range(thread):
+
                 t = threading.Thread(target=self.main, args=(queue,))
                 t.setDaemon(True)
                 t.start()
                 threads.append(t)
+
             for t in threads:
                 t.join()
             queuelock.release()       
@@ -178,7 +197,11 @@ class checker():
                 res = session.get(self.url,timeout=120)
                 
                 if res.ok:
-                    
+                    if self.is_gui:
+                        with open(self.temp,'a') as f:
+                            f.write(proxy+'\n')
+                            f.close()
+                    # print(f'{proxy} is working')
                     proxy_data.append(proxy)
                     if not self.is_web:
                         print( "\033[1;32m --[+] ", proxy, " | PASS \n" )
@@ -186,10 +209,20 @@ class checker():
                 else:
                     if not self.is_web:
                         print("\033[1;31m --[!] ", proxy, " | FAILED\n")
+                if self.is_gui:
+                    with open(self.prog_temp,'w') as f:
+                        f.write(f'{self.checked_count}')
+                        f.close()
+                    self.checked_count += 1
+
             except Exception as e:
                 if not self.is_web:
                     print("\033[1;31m --[!] ", proxy, " | FAILED\n")
-                    pass
+                if self.is_gui:
+                    with open(self.prog_temp,'w') as f:
+                        f.write(f'{self.checked_count}')
+                        f.close()
+                    self.checked_count +=1
                 return
             
             
