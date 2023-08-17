@@ -1,10 +1,28 @@
 from flet import *
-import flet
 from Checker import  Checker
 from  Scraper import  Scraper
-import os
-import  json
+import os,re,json,flet
 from concurrent.futures import ThreadPoolExecutor
+from time import sleep
+
+
+########## Progress bar
+
+prog_b = ProgressBar(color='#08FF08', bgcolor="black")
+prog_b_cont = Container(
+    content = Row(
+
+        alignment=MainAxisAlignment.CENTER,
+        vertical_alignment=CrossAxisAlignment.CENTER,
+        controls = [
+            prog_b
+        ]
+    ),
+    padding = padding.only(top=15)
+)
+
+
+
 
 def change_color(e):
     # print(e.control)
@@ -362,10 +380,11 @@ screen_content = Container(
             main,
             opt_main,
             type_main,
-            control_main
+            control_main,
         ],
         # horizontal_alignment=CrossAxisAlignment.CENTER,
         # alignment=MainAxisAlignment.CENTER
+        # spacing =10
         
     )
 )
@@ -411,6 +430,7 @@ class ProxtToolKitGui:
         self.type_selectod = False
         self.state_selectod = False
         self.checking = False
+        self.valid_proxy =[]
         self.confirm_alert = AlertDialog(
             modal=True,
             title=Text("Please confirm"),
@@ -422,11 +442,47 @@ class ProxtToolKitGui:
             actions_alignment=MainAxisAlignment.END,
             # on_dismiss=lambda e: print("Modal dialog dismissed!"),
         )
+        # self.invalid_proxy_alert =AlertDialog(
+        #     title=Text("Invalid proxys or no proxys found"),
+        # )
 
         self.file_chooser= FilePicker(on_result=self.file_chooser_result)
         self.page.overlay.append(self.file_chooser)
         self.file_loader = FilePicker(on_result = self.load_file)
         self.page.overlay.append(self.file_loader)
+        self.cheker_alert =AlertDialog(
+            modal=True,
+            title=Text("Please confirm"),
+            content=Text(f"Do you really want to continue Checking {self.type} Proxy?"),
+            actions=[
+                TextButton("Yes", on_click=lambda e: self.close_checker_alert(e)),
+                TextButton("No", on_click=lambda e: self.close_checker_alert(e)),
+            ],
+            actions_alignment=MainAxisAlignment.END,
+            # on_dismiss=lambda e: print("Modal dialog dismissed!"),
+        )
+        self.invalid_proxy_alert =AlertDialog(
+            modal=True,
+            title=Text("Invalid Proxy Error"),
+            content=Text("Invalid proxys or no proxys found,maybe it due to proxys is empty or it must be a alphabet"),
+            actions=[
+                TextButton("Ok", on_click=lambda e: self.close_invalid_alert(e)),
+            ],
+            actions_alignment=MainAxisAlignment.END,
+        )
+
+    def create_new_checker_window(self):
+        main.content.controls[0].content.value =''
+        start_btn.bgcolor = '#303236'
+        start_btn.update()
+    def close_invalid_alert(self,e):
+
+        user_confirmed = e.control.text
+        self.invalid_proxy_alert.open = False
+        self.page.update()
+        if user_confirmed == 'Ok':
+            self.create_new_checker_window()
+        else:pass
 
     def load_file(self,e:FilePickerResultEvent):
         import  json
@@ -443,7 +499,7 @@ class ProxtToolKitGui:
             item = str(item).replace('\r','').replace('\n','')
             new_data = old_data + item
             main.content.controls[0].content.value = new_data
-        # main.content.controls[0].content.value = read_data
+
         main.update()
 
     def file_chooser_result(self,e:FilePickerResultEvent):
@@ -536,7 +592,9 @@ class ProxtToolKitGui:
         # move_to_check.on_click =lambda  _:self.check_from_window()
 
     def updata_checker_text(self):
-
+        prog_b.width = self.page.window_width/2
+        screen_content.content.controls.append(prog_b_cont)
+        screen_content.update()
         proxys_txt = main.content.controls[0].content.value
         print(self.checking)
         while self.checking:
@@ -551,38 +609,63 @@ class ProxtToolKitGui:
                     main.content.controls[0].content.value = f'{old_proxy}{proxy}'
                     main.update()
             else:pass
+    def validate_proxy(self):
+        self.valid_proxy = []
+        proxy = self.convert_text_to_list()
+        for item in proxy:
+            match = not re.search(r'[a-zA-Z]+', item) and re.search(r'[0-9]+', item)
+            if match:
+                self.valid_proxy.append(item)
+            else:
+                pass
+        if len(self.valid_proxy) !=0 and len(self.valid_proxy)>0:
+            return True
+        else:
+            return False
 
     def Start_checking(self,is_path:bool=False):
-        main.content.controls[0].content.value = ''
-        main.update()
-        proxy = self.proxys
-        proxy_type = str(self.type).lower()
-        checker = Checker(
-            proxy_type=proxy_type,
-            is_web=True,
-            proxys=proxy,
-            is_path=False,
-            is_gui = True
-        )
+        sleep(2)
         # checked_proxies = checker.check()
-        with ThreadPoolExecutor(max_workers=2) as exc:
-            self.checking = True
-            checker_thread = exc.submit(checker.check)
-            updater = exc.submit(self.updata_checker_text)
-            # updater_res = updater.result()
-            checker_result = checker_thread.result()
-            if checker_result:
-                self.checking = False
-                self.state = 'Start'
-                start_btn.bgcolor = '#303236'
-                start_btn.update()
-                alert =AlertDialog(
-                    title=Text("Proxy Checking Finished"),
-                )
-                self.page.dialog = alert
-                alert.open = True
-                self.page.update()
-        ############### checker prog here
+        if self.validate_proxy() :
+            main.content.controls[0].content.value = ''
+            main.update()
+            proxy = self.valid_proxy
+            proxy_type = str(self.type).lower()
+            checker = Checker(
+                proxy_type=proxy_type,
+                is_web=True,
+                proxys=proxy,
+                is_path=is_path,
+                is_gui = True
+            )
+            # print('hey')
+            with ThreadPoolExecutor(max_workers=3) as exc:
+                self.checking = True
+                checker_thread = exc.submit(checker.check)
+                updater = exc.submit(self.updata_checker_text)
+                prog_updater = exc.submit(self.update_prog_bar)
+                # updater_res = updater.result()
+                checker_result = checker_thread.result()
+                if checker_result:
+                    self.checking = False
+                    self.state = 'Start'
+                    start_btn.bgcolor = '#303236'
+                    start_btn.update()
+                    alert =AlertDialog(
+                        title=Text("Proxy Checking Finished"),
+                    )
+                    self.page.dialog = alert
+                    alert.open = True
+                    self.page.update()
+        else:
+
+            self.page.dialog = self.invalid_proxy_alert
+            self.invalid_proxy_alert.open = True
+            self.page.update()
+            sleep(1)
+            # print('hey')
+
+
 
     def close_checker_alert(self,e):
         user_confirmed = e.control.text
@@ -598,21 +681,10 @@ class ProxtToolKitGui:
             start_btn.update()
 
 
-    def check_from_window(self,e):
+    def check_from_window(self):
 
         proxies = main.content.controls[0].content.value
         self.proxys = proxies
-        self.cheker_alert =AlertDialog(
-            modal=True,
-            title=Text("Please confirm"),
-            content=Text(f"Do you really want to continue Checking {self.type} Proxy?"),
-            actions=[
-                TextButton("Yes", on_click=lambda e: self.close_checker_alert(e)),
-                TextButton("No", on_click=lambda e: self.close_checker_alert(e)),
-            ],
-            actions_alignment=MainAxisAlignment.END,
-            # on_dismiss=lambda e: print("Modal dialog dismissed!"),
-        )
         self.page.dialog = self.cheker_alert
         self.cheker_alert.open = True
         self.page.update()
@@ -633,8 +705,9 @@ class ProxtToolKitGui:
             self.mode_selectod = True
         if self.mode == 'Check':
             control_main.content.controls.append(load_btn)
-            start_btn.on_click = lambda e: self.check_from_window(e)
+            start_btn.on_click = lambda _: self.check_from_window()
             start_btn.update()
+
             # control_main.content.controls.append(move_to_check)
             control_main.update()
         else:
@@ -682,5 +755,21 @@ class ProxtToolKitGui:
             self.confirm_alert.open = True
             self.page.update()
 
+    def convert_text_to_list(self):
+        string =self.proxys
+        proxy_list = []
+        proxys = string.replace('\r','')
+        proxys = proxys.split('\n')
+        for proxy in proxys:
+            if len(proxy) <5 :
+                proxys.remove(proxy)
+            else:
+                proxy_list.append(proxy)
+        self.proxy_list_type = list
+        return proxy_list
+    def update_prog_bar(self):
+        proxy = self.convert_text_to_list()
+        length = len(proxy)
+        print(length)
 
 flet.app(target=ProxtToolKitGui)
