@@ -1,5 +1,4 @@
 
-
 class InavalidProxyData(Exception):
     def __init__(self):
         self.message = '\n\nInvalidProxyData: Invalid Proxy Data , This error must be due to invalid type of proxys list'

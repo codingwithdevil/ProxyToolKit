@@ -1,14 +1,188 @@
 from flet import *
-from Checker import  Checker
-from  Scraper import  Scraper
-import os,re,json,flet
+from . import  Scraper,Checker
+import os,re,json,flet,webbrowser as wb
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
+
+############ Support sec
+def support_func(index):
+    if index == 'insta':
+        # wb.open('https://www.instagram.com/codingwithdevil/')
+        wb.open('https://www.instagram.com/the_el_cucuy/')
+    
+    elif index == 'git':
+        wb.open('https://github.com/codingwithdevil/')
+    
+    elif index == 'tg':
+        wb.open('https://t.me/CodingWithDevil')
+    
+    elif index == 'twt':
+        wb.open('https://twitter.com/CodingWithDevil')
+    elif index == 'yt':
+        wb.open('https://www.youtube.com/c/codingwithdevil')
+    else:
+        pass
+
+def btn_hover(e):
+    if e.data == 'true':
+        e.control.content.color = 'black'
+        e.control.border = border.all(1,'#08FF08')
+        e.control.update()
+    else:
+        e.control.content.color = 'white'
+        e.control.border = border.all(1,'black')
+        e.control.update()
+
+
+tel_btn = Container(
+    border_radius=60,
+    border=border.all(1,'black'),
+    # width=40,
+    height=40,
+    content=Text(
+        'Telegram',
+        color='white',
+        size=15,
+        weight=FontWeight.BOLD
+    ),
+    bgcolor='blue',
+    alignment=alignment.center,
+    padding=padding.only(
+        top=5,
+        bottom=5,
+        left=13,
+        right=13
+    ),
+    on_hover=btn_hover,
+    on_click=lambda _: support_func('tg')
+)
+git_btn = Container(
+    border_radius=60,
+    border=border.all(1,'black'),
+    height=40,
+    content=Text(
+        'GitHub',
+        color='white',
+        size=15,
+        weight=FontWeight.BOLD
+    ),
+    bgcolor='grey',
+    alignment=alignment.center,
+    padding=padding.only(
+        top=5,
+        bottom=5,
+        left=13,
+        right=13
+    ),
+    on_hover=btn_hover,
+    on_click=lambda _: support_func('git')
+    
+)
+insta_btn = Container(
+    border_radius=60,
+    border=border.all(1,'black'),
+    height=40,
+    content=Text(
+        'Instagram',
+        color='white',
+        size=15,
+        weight=FontWeight.BOLD
+    ),
+    bgcolor='Pink',
+    alignment=alignment.center,
+    padding=padding.only(
+        top=5,
+        bottom=5,
+        left=13,
+        right=13
+    ),
+    on_hover=btn_hover,
+    on_click=lambda _: support_func('insta')
+)
+youtube_btn = Container(
+    border_radius=60,
+    border=border.all(1,'black'),
+    height=40,
+    content=Text(
+        'Youtube',
+        color='white',
+        size=15,
+        weight=FontWeight.BOLD
+    ),
+    bgcolor='Red',
+    alignment=alignment.center,
+    padding=padding.only(
+        top=5,
+        bottom=5,
+        left=13,
+        right=13
+    ),
+    on_hover=btn_hover,
+    on_click=lambda _: support_func('yt')
+)
+
+tweet_btn = Container(
+    border_radius=60,
+    border=border.all(1,'black'),
+    height=40,
+    content=Text(
+        'Twitter',
+        color='white',
+        size=15,
+        weight=FontWeight.BOLD
+    ),
+    bgcolor='blue',
+    alignment=alignment.center,
+    padding=padding.only(
+        top=5,
+        bottom=5,
+        left=13,
+        right=13
+    ),
+    on_hover=btn_hover,
+    on_click=lambda _: support_func('twt')
+)
+
+support = Container(
+    content=Row(
+        controls=[
+            Column([
+                Row(
+                [
+                    Text('Support | Contact us on :',color='white',weight=FontWeight.BOLD)
+                ]
+                
+                ),
+                Row(
+                    controls=[
+                        tel_btn,
+                        git_btn,
+                        insta_btn,
+                        youtube_btn,
+                        tweet_btn
+                    ]
+                )
+                
+            ])
+        ],
+        alignment=MainAxisAlignment.CENTER,
+        vertical_alignment=CrossAxisAlignment.CENTER
+        
+    ),
+    padding=padding.only(bottom=20),
+    margin=margin.only(bottom=20)
+)
+
+
+
 
 
 ########## Progress bar
 
-prog_b = ProgressBar(color='#08FF08', bgcolor="black")
+
+
+
+prog_b = ProgressBar(color='#08FF08', bgcolor="red")
 prog_b_cont = Container(
     content = Row(
 
@@ -25,7 +199,6 @@ prog_b_cont = Container(
 
 
 def change_color(e):
-    # print(e.control)
     if e.data == 'true':
         e.control.content.color = '#08FF08'
         e.control.border = border.all(1,'#08FF08')
@@ -117,20 +290,6 @@ load_btn = Container(
     ),
     on_hover=lambda e: change_color(e),
 )
-
-# move_to_check = Container(
-#     border_radius=30,
-#     border=border.all(1,'black'),
-#     content=Text('Move to Check',color='white'),
-#     bgcolor='#303236',
-#     padding=padding.only(
-#         top=5,
-#         bottom=5,
-#         left=20,
-#         right=20
-#     ),
-#     on_hover=lambda e: change_color(e),
-# )
 
 
 control_main = Container(
@@ -341,7 +500,7 @@ main = Container(
 )
 
 ############ app bar
-
+help_btn = IconButton(icon=icons.HELP,icon_size=25,icon_color='white',)
 
 app_bar = Container(
     content=Row(
@@ -353,7 +512,7 @@ app_bar = Container(
                 text_align='center',
                 size=25
             ),
-            IconButton(icon=icons.HELP,icon_size=25,icon_color='white',)
+            help_btn
         ],
         wrap=False,
         vertical_alignment=CrossAxisAlignment.CENTER,
@@ -381,6 +540,7 @@ screen_content = Container(
             opt_main,
             type_main,
             control_main,
+            support
         ],
         # horizontal_alignment=CrossAxisAlignment.CENTER,
         # alignment=MainAxisAlignment.CENTER
@@ -409,10 +569,12 @@ class ProxtToolKitGui:
 
     def __init__(self,page:Page):
         self.page = page
-        # page.window_height = 640
-        # page.window_width = 360
+        page.window_height = 770
+        page.window_min_width = 480
+        page.window_min_height = 770
+        page.window_resizable = True
         page.auto_scroll= False
-        page.scroll = 'hidden'
+        page.scroll = 'always'
         page.bgcolor = 'black'
         page.spacing = 0
         page.padding = 0
@@ -431,6 +593,10 @@ class ProxtToolKitGui:
         self.state_selectod = False
         self.checking = False
         self.valid_proxy =[]
+        self.checker_thread = None
+        self.out_updater = None
+        self.prog_updater = None
+        
         self.confirm_alert = AlertDialog(
             modal=True,
             title=Text("Please confirm"),
@@ -440,11 +606,9 @@ class ProxtToolKitGui:
                 TextButton("No", on_click=lambda e: self.close_dlg(e)),
             ],
             actions_alignment=MainAxisAlignment.END,
-            # on_dismiss=lambda e: print("Modal dialog dismissed!"),
+            
         )
-        # self.invalid_proxy_alert =AlertDialog(
-        #     title=Text("Invalid proxys or no proxys found"),
-        # )
+        
 
         self.file_chooser= FilePicker(on_result=self.file_chooser_result)
         self.page.overlay.append(self.file_chooser)
@@ -459,7 +623,7 @@ class ProxtToolKitGui:
                 TextButton("No", on_click=lambda e: self.close_checker_alert(e)),
             ],
             actions_alignment=MainAxisAlignment.END,
-            # on_dismiss=lambda e: print("Modal dialog dismissed!"),
+            
         )
         self.invalid_proxy_alert =AlertDialog(
             modal=True,
@@ -570,11 +734,14 @@ class ProxtToolKitGui:
 
 
     def res(self):
+       
         main.width = self.page.window_width
-        # main.height = self.page.window_height
         main.content.controls[0].content.width = self.page.window_width/2
         main.content.controls[0].content.height = self.page.window_height/2
         self.page.update()
+
+    def open_help(self,e):
+        wb.open('https://github.com/codingwithdevil/ProxyToolKit')
 
     def btn_func_setter(self):
         scrape_btn.on_click = lambda e: self.main_mode_select_color(e)
@@ -585,10 +752,11 @@ class ProxtToolKitGui:
         socks5_btn.on_click = lambda e: self.type_color_selector(e)
         all_btn.on_click = lambda e : self.type_color_selector(e)
         start_btn.on_click = lambda e: self.type_selector(e)
-        # stop_btn.on_click = lambda  e: self.type_selector(e)
+        stop_btn.on_click = lambda  e: self.stop(e)
         clear_btn.on_click = lambda e: self.clear(e)
         save_btn.on_click = lambda e:self.save(e)
         load_btn.on_click = lambda e:self.file_loader.pick_files(allow_multiple=False,allowed_extensions=['txt'])
+        help_btn.on_click = lambda e: self.open_help(e)
         # move_to_check.on_click =lambda  _:self.check_from_window()
 
     def updata_checker_text(self):
@@ -596,12 +764,11 @@ class ProxtToolKitGui:
         screen_content.content.controls.append(prog_b_cont)
         screen_content.update()
         proxys_txt = main.content.controls[0].content.value
-        print(self.checking)
-        while self.checking:
+
+        while self.checking :
 
             new_proxy = open('temp.txt','r').readlines()
 
-            # print(f'new Text : {new_proxy}')
             if new_proxy!= proxys_txt:
                 proxys_txt = new_proxy
                 for proxy in proxys_txt:
@@ -638,13 +805,16 @@ class ProxtToolKitGui:
                 is_path=is_path,
                 is_gui = True
             )
-            # print('hey')
+            self.checker = checker
             with ThreadPoolExecutor(max_workers=3) as exc:
                 self.checking = True
                 checker_thread = exc.submit(checker.check)
                 updater = exc.submit(self.updata_checker_text)
                 prog_updater = exc.submit(self.update_prog_bar)
-                # updater_res = updater.result()
+                self.checker_thread = checker_thread
+                self.out_updater = updater
+                self.prog_updater = prog_updater
+                self.exc = exc
                 checker_result = checker_thread.result()
                 if checker_result:
                     self.checking = False
@@ -663,18 +833,13 @@ class ProxtToolKitGui:
             self.invalid_proxy_alert.open = True
             self.page.update()
             sleep(1)
-            # print('hey')
-
-
 
     def close_checker_alert(self,e):
         user_confirmed = e.control.text
         self.cheker_alert.open = False
         self.page.update()
-        # print('hola')
         if user_confirmed == 'Yes' and self.state == 'Start':
             self.Start_checking(is_path=False)
-            # print('im here')
         else:
             self.state =''
             start_btn.bgcolor = '#303236'
@@ -705,14 +870,26 @@ class ProxtToolKitGui:
             self.mode_selectod = True
         if self.mode == 'Check':
             control_main.content.controls.append(load_btn)
+            if all_btn.bgcolor =='red':
+                all_btn.bgcolor = '#303236'
+            all_btn.disabled = True
+            all_btn.visible = False
+            all_btn.update()
             start_btn.on_click = lambda _: self.check_from_window()
             start_btn.update()
-
-            # control_main.content.controls.append(move_to_check)
+            
             control_main.update()
         else:
             try:
+                all_btn.disabled = False
+                all_btn.visible = True
+                all_btn.update()
                 control_main.content.controls.remove(load_btn)
+                try:
+                    
+                    screen_content.content.controls.remove(prog_b_cont)
+                    screen_content.update()
+                except Exception as e:pass
                 # control_main.content.controls.remove(move_to_check)
                 start_btn.on_click = lambda e: self.type_selector(e)
                 start_btn.update()
@@ -767,9 +944,37 @@ class ProxtToolKitGui:
                 proxy_list.append(proxy)
         self.proxy_list_type = list
         return proxy_list
+    
     def update_prog_bar(self):
         proxy = self.convert_text_to_list()
         length = len(proxy)
-        print(length)
+        value = 1/length
+        old_count = 0
+        while self.checking:
+            
+            count = open('prog_temp.txt','r').readlines()
+            count_value = int(count[0]) if len(count)!=0 else 0
+            
+            if count_value!= old_count and count_value<=length:
+                prog_b.value = value*count_value
+                prog_b.update()
+                old_count = count_value
+            else:
+                pass
+            
+    def stop(self,e):
+        if self.mode == 'Check':
+            self.checking = False
+            self.checker_thread.cancel()
+            self.out_updater.cancel()
+            self.prog_updater.cancel()
+            self.checker.stop()
+            start_btn.bgcolor = '#303236'
+            start_btn.update()
+            # Checker
+            import sys
+            sys.exit()
+        else:pass
 
-flet.app(target=ProxtToolKitGui)
+def run_gui():
+    flet.app(target=ProxtToolKitGui)

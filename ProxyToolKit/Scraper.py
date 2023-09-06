@@ -1,7 +1,7 @@
 import requests as rqs
 from bs4 import BeautifulSoup
-from utlis.agents import user_agents
-from Exceptions import *
+from ProxyToolKit.agents import user_agents
+from .Exceptions import *
 import random,os
 from datetime import datetime as dt
 from concurrent.futures import ThreadPoolExecutor
@@ -29,7 +29,6 @@ class Scraper():
         url = f"https://api.proxyscrape.com/v2/?request=getproxies&protocol={proxy_type}&timeout=all&country=all"
         r = self.session.get(url)
         proxies = r.text  
-        # print(proxies)
         proxy_data+=proxies
         response = self.session.get(f"https://api.proxyscrape.com/?request=getproxies&proxytype={proxy_type}&timeout=all&country=all")
         p = response.text
@@ -77,15 +76,9 @@ class Scraper():
         if data:
             data = data.replace('\r','\n')
             data = data.split('\n')
-            
-            # print(len(data))
             for i  in data:
-                # print(i)
-                # print(len(i))
                 if len(i) !=0:
                     new_data.append(i)
-            
-            # print(new_data)
         return new_data
 
     def scrape(self):
