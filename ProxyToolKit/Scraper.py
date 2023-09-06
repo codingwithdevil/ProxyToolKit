@@ -82,6 +82,7 @@ class Scraper():
         return new_data
 
     def scrape(self):
+        
         if self.proxy_type:
             
             if self.proxy_type =='all':               

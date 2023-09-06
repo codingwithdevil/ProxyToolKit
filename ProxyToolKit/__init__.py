@@ -1,4 +1,4 @@
-__version__ = '0.2'
+__version__ = 'V1'
 from .Checker import Checker
 from .Scraper import Scraper
 from .Exceptions import (
