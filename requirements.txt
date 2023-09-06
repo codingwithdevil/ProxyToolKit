@@ -56,7 +56,7 @@ Brlapi==0.8.5
 Brotli==1.0.9
 cbor==1.0.0
 censys==2.2.4
-certifi==2022.9.24
+certifi==2023.7.22
 certipy-ad==4.7.0
 cffi==1.15.1
 chardet==5.2.0
