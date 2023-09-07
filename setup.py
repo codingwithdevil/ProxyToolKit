@@ -23,7 +23,20 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.7",
-    install_requires=requirements,
+    install_requires=[
+        'beautifulsoup4',
+        'bs4',
+        'certifi',
+        'charset-normalizer',
+        'idna',
+        'PyQt5',
+        'PyQt5-Qt5',
+        'PyQt5-sip',
+        'requests',
+        'soupsieve',
+        'urllib3',
+        'flet'
+    ],
     entry_points={
         'console_scripts': [
             'ProxyToolKitGui = ProxyToolKit.ProxyToolKitGui:run',
