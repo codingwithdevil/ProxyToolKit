@@ -1,40 +1,30 @@
-from setuptools import setup, find_packages
+import setuptools
+import os
+Proxytoolkit_version = 'v1'
 
-setup(
-    name='ProxyToolKit',
-    version='V1',
-    license='MIT',
-    author='Coding With Devil',
-    author_email='codingwithdevil@gmail.com',
-    description='Proxy Scraper and Checker',
-    long_description='''With this module you can easly scrape and check proxy without any limitations ,
-    also you can use this to webapps ,New Feature Gui Version is available just type "ProxyToolKitGui"''',
-    long_description_content_type='text/markdown',
-    url='https://github.com/codingwithdevil/ProxyToolKit.git',
-    download_url='https://github.com/codingwithdevil/ProxyToolKit/archive/refs/tags/v0.1.tar.gz',
-    packages=find_packages(),
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
+    name="cf-remote",
+    version=Proxytoolkit_version,
+    author="Northern.tech, Inc.",
+    author_email="contact@northern.tech",
+    description="Tooling to deploy CFEngine (and much more)",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/cfengine/cf-remote",
+    packages=setuptools.find_packages(),
+    package_data={"cf_remote": ["VERSION"]},
+    include_package_data=True,
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: OS Independent",
     ],
+    python_requires=">=3.5",
+    entry_points={"console_scripts": ["cf-remote = cf_remote.main:main"]},
     install_requires=[
-        'beautifulsoup4',
-        'bs4',
-        'certifi',
-        'charset-normalizer',
-        'idna',
-        'PyQt5',
-        'PyQt5-Qt5',
-        'PyQt5-sip',
-        'requests',
-        'soupsieve',
-        'urllib3',
-        'flet'
-        # List other dependencies required by your package
+        "apache-libcloud >= 3.3.1",
     ],
-    python_requires='>=3.7',
 )
