@@ -20,7 +20,7 @@
 ***Gui version also install when it install using pip***<br><br>
 **To use Gui version:**<br>
 ```
-ProxyToolKitGui #type in the terminal and hit enter
+ProxyToolKitGui
 ```
 
 ***
