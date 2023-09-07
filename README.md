@@ -1,10 +1,10 @@
 # ProxyToolKit 
-***This Module is used to scrape and check porxies without any limitations, Users can retrive data or save data according to there choice,Saving Data Stored in currently working Dictonary Retrive data is usefull when the module is using in a webapp or projects***
+***This Module is used to scrape and check porxies without any limitations, Users can retrive data or save data according to there choice,Saving Data Stored in currently working Dictonary Retrive data is usefull when the module is using in a webapp or projects, also GUI version Available***
 
 <br>
 
 
-## Latest version : V.01 <br>
+## Latest version : V1 <br>
 
 ### Features : <br>
 ##### &emsp; [+]  User can scrape 3k+ proxies<br>
@@ -13,12 +13,21 @@
 ##### &emsp; [+]  Saving Files by creating folder and named by using type & Current time including sec & millisec <br>
 ##### &emsp; [+]  Returning Response or Saving Feature Available<br>
 ##### &emsp; [+]  completely Free <br>
+##### &emsp; [+]  GUI Version also availabel <br>
+
+***
+### [+] About Gui Version <br>
+***Gui version also install when it install using pip***<br><br>
+**To use Gui version:**<br>
+```ProxyToolKitGui #type in the terminal and hit enter```
+
+***
 
 ### Installalion : <br>
 ``` 
 pip install ProxyToolKit
 ```
-
+***
 ### [+] Examples <br>
 
 ##### Scraping: 
@@ -79,11 +88,12 @@ proxys = scraper.scrape() # Run
 print(proxys)
 
 ```
+***
 
 ### [+] Support :-
 
 <a href="https://t.me/https://t.me/CodingWithDevil_yt"><img src="https://img.shields.io/badge/telegram-D14836?color=2CA5E0&style=for-the-badge&logo=telegram&logoColor=white"></a>
-<a href="https://www.instagram.com/codingwithdevil"><img src="https://img.shields.io/badge/instagram-%23E4405F.svg?&style=for-the-badge&logo=instagram&logoColor=white"></a>
+<a href="https://www.instagram.com/the_el_cucuy/l"><img src="https://img.shields.io/badge/instagram-%23E4405F.svg?&style=for-the-badge&logo=instagram&logoColor=white"></a>
 <a href="https://www.youtube.com/c/codingwithdevil"><img src="https://img.shields.io/youtube/channel/subscribers/UCnKlznTEohj_PCw9cuxy8Zg?style=social"></a>
 <a href="https://t.me/CodingWithDevil"><img src="https://img.shields.io/badge/Telegram-Group-blue"></a>
 <a href="https://t.me/Codingwithdevil_group_chat"><img src="https://img.shields.io/badge/Telegram-Group%20Chat-blue"></a>

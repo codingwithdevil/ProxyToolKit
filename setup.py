@@ -1,30 +1,32 @@
 import setuptools
-import os
-Proxytoolkit_version = 'v1'
+
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="cf-remote",
-    version=Proxytoolkit_version,
-    author="Northern.tech, Inc.",
-    author_email="contact@northern.tech",
-    description="Tooling to deploy CFEngine (and much more)",
+    name="ProxyToolKit",
+    license='MIT',
+    version='V1',
+    author="Coding With Devil ( Binshan Iqbal )",
+    author_email="codingwithdevil@gmail.com",
+    description="Proxy Scraper and Checker",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/cfengine/cf-remote",
+    url="https://github.com/codingwithdevil/ProxyToolKit.git",
     packages=setuptools.find_packages(),
-    package_data={"cf_remote": ["VERSION"]},
-    include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        'License :: OSI Approved :: MIT License',
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.5",
-    entry_points={"console_scripts": ["cf-remote = cf_remote.main:main"]},
-    install_requires=[
-        "apache-libcloud >= 3.3.1",
-    ],
+    python_requires=">=3.7",
+    install_requires=requirements,
+    entry_points={
+        'console_scripts': [
+            'ProxyToolKitGui = ProxyToolKit.ProxyToolKitGui:run',
+        ],
+    }
 )

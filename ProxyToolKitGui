@@ -1,6 +1,0 @@
-# !usr/bin/python
-
-import ProxyToolKit
-import flet
-
-flet.app(target=ProxyToolKit.ProxtToolKitGui)

@@ -1,3 +1,5 @@
+# !usr/bin/python
+
 # Copyright (c) 2023 BrutalCoders
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,15 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-__version__ = 'V1'
-from .Checker import Checker
-from .Scraper import Scraper
-from .Exceptions import (
-    InavalidProxyData,
-    PathError,
-    NetworkError,
-    ModuleError,
-    RequirementsError
-    )
-from .agents import user_agents
-from .ProxyToolKitGUI import ProxtToolKitGui
+
+import ProxyToolKit
+import flet
+def run():
+    flet.app(target=ProxyToolKit.ProxtToolKitGui)
+    
+if __name__ =="__main__":
+    run()
