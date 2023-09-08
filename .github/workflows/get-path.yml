@@ -21,4 +21,4 @@ jobs:
       - name: Find Working Directory
         run: |
           echo "Current working directory is: $(pwd)"
-          ls "/home/runner/work/ProxyToolKit/"
+          ls "/home/runner/work/ProxyToolKit/ProxyToolKit"
