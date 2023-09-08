@@ -21,3 +21,4 @@ jobs:
       - name: Find Working Directory
         run: |
           echo "Current working directory is: $(pwd)"
+          ls "$pwd"
