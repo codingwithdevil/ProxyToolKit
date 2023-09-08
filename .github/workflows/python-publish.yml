@@ -4,9 +4,9 @@
 name: Upload Python Package
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
+
 jobs:
   deploy:
 
@@ -36,5 +36,3 @@ jobs:
       run: |
         python setup.py sdist bdist_wheel
         twine upload dist/*
-        echo "finished"
-        echo "finished"
