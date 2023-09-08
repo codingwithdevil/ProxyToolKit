@@ -27,7 +27,7 @@ ProxyToolKitGui
 
 ### Installalion : <br>
 ``` 
-pip install ProxyToolKit
+pip install proxytoolkit==1.0.2
 ```
 ***
 ### [+] Examples <br>

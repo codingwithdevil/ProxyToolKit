@@ -1,15 +1,12 @@
 import setuptools
 
-with open('requirements.txt','r') as f:
-    requirements = f.read().splitlines()
-
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ProxyToolKit",
+    name="proxytoolkit",
     license='MIT',
-    version='V1',
+    version='V1.0.2',
     author="Coding With Devil ( Binshan Iqbal )",
     author_email="codingwithdevil@gmail.com",
     description="Proxy Scraper and Checker",
@@ -39,7 +36,7 @@ setuptools.setup(
     ],
     entry_points={
         'console_scripts': [
-            'ProxyToolKitGui = ProxyToolKit.ProxyToolKitGui:run_gui',
+            'ProxyToolKitGui = proxytoolkit:run_gui',
         ],
     }
 )

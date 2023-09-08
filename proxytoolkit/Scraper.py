@@ -21,7 +21,7 @@
 
 import requests as rqs
 from bs4 import BeautifulSoup
-from ProxyToolKit.agents import user_agents
+from proxytoolkit.agents import user_agents
 from .Exceptions import *
 import random,os
 from datetime import datetime as dt

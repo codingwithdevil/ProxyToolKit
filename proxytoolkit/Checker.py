@@ -21,7 +21,7 @@
 
 from PyQt5.QtWidgets import QApplication, QMessageBox
 import random,requests as rqs,os,threading,sys
-from ProxyToolKit.agents import user_agents
+from proxytoolkit.agents import user_agents
 from .Exceptions import *
 import queue as Queue
 from concurrent.futures import ThreadPoolExecutor

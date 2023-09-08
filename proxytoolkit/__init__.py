@@ -17,7 +17,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-__version__ = 'V1'
+__version__ = 'V1.0.2'
 from .Checker import Checker
 from .Scraper import Scraper
 from .Exceptions import (
@@ -28,4 +28,4 @@ from .Exceptions import (
     RequirementsError
     )
 from .agents import user_agents
-from .ProxyToolKitGUI import ProxtToolKitGui,run_gui
+from .ProxyToolKitGUI import run_gui
