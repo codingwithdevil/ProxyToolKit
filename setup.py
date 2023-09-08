@@ -39,7 +39,7 @@ setuptools.setup(
     ],
     entry_points={
         'console_scripts': [
-            'ProxyToolKitGui = ProxyToolKit.ProxyToolKitGui:run',
+            'ProxyToolKitGui = ProxyToolKit.ProxyToolKitGui:run_gui',
         ],
     }
 )
