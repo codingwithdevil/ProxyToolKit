@@ -28,4 +28,4 @@ from .Exceptions import (
     RequirementsError
     )
 from .agents import user_agents
-from .ProxyToolKitGUI import ProxtToolKitGui
+from .ProxyToolKitGUI import ProxtToolKitGui,run_gui
