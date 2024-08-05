@@ -1,10 +1,12 @@
 import requests as rqs
+from requests.auth import HTTPProxyAuth
 from bs4 import BeautifulSoup
 from .Exceptions import *
 import random
 from pyProxy.agents import user_agents
+import re
 
-class scrapeProxy():
+class ScrapeProxy():
     def __init__(self):
         self.proxy_types = ['all','http','https','socks4','socks5']
         self.proxyscrape = "https://api.proxyscrape.com/?request=getproxies&proxytype={}&timeout=all&country=all"
@@ -110,5 +112,128 @@ class scrapeProxy():
             return filtered_proxy
         else:
             raise ProxyTypeError()
+
+
+class CheckProxy:
+    def __init__(self):
+        self.session = rqs.Session()
         
-print(scrapeProxy().scrape('socks5'))
+        self.ip = self.get_ip()
+        self.proxy_judges = [
+            'http://proxyjudge.us/',
+            'http://mojeip.net.pl/asdfa/azenv.php'
+        ]
+
+    def send_query(self, proxy=None, url=None, user=None, password=None):
+        proxies = {}
+        if proxy:
+            proxies['http'] = proxy
+            proxies['https'] = proxy
+        
+        auth = None
+        if user and password:
+            auth = HTTPProxyAuth(user, password)
+
+        try:
+            # Perform the request
+            response = rqs.get(
+                url or random.choice(self.proxy_judges),
+                proxies=proxies,
+                auth=auth,
+                timeout=10  # Timeout in seconds
+            )
+            
+            # Check if the HTTP status code is 200
+            if response.status_code != 200:
+                return False
+            
+            # Calculate the request timeout in milliseconds (requests does not provide this directly)
+            timeout = 10000  # You can set a fixed value or measure it differently
+
+            # Return the response details
+            return {
+                'timeout': timeout,
+                'response': response.text
+            }
+        
+        except rqs.RequestException:
+            # Handle exceptions and errors
+            # print(f"Request failed: {e}")
+            return False
+        
+    def get_ip(self):
+        session = self.session
+        res = session.get('https://api.ipify.org/')
+        if res:
+            # print()
+            return res.text
+
+    def get_country(self, ip):
+        response = self.send_query(url=f'https://ip2c.org/{ip}')
+        if response and response['response'][0] == '1':
+            r = response['response'].split(';')
+            return [r[3], r[1]]
+        return ['-', '-']
+    
+    def parse_anonymity(self, r):
+        if self.ip in r:
+            return 'Transparent'
+
+        privacy_headers = [
+            'VIA', 'X-FORWARDED-FOR', 'X-FORWARDED', 
+            'FORWARDED-FOR', 'FORWARDED-FOR-IP', 'FORWARDED', 
+            'CLIENT-IP', 'PROXY-CONNECTION'
+        ]
+
+        if any(header in r for header in privacy_headers):
+            return 'Anonymous'
+
+        return 'Elite'
+    
+
+    def check_proxy(self,proxy, check_country=True, check_address=True):
+        protocols = {}
+        timeout = 0
+
+        for protocol in ['http', 'socks4', 'socks5']:
+            response = self.send_query(proxy=f"{protocol}://{proxy}")
+            if response:
+                protocols[protocol] = response
+                timeout += response['timeout']
+
+        if not protocols:
+            return False
+        
+        selected_protocol = random.choice(list(protocols.keys()))
+        r = protocols[selected_protocol]['response']
+
+        if check_country:
+            country = self.get_country(proxy.split(':')[0])
+        
+        anonymity = self.parse_anonymity(r)
+        timeout = timeout // len(protocols)
+
+        remote_addr = None
+        if check_address:
+            remote_regex = r'REMOTE_ADDR = (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+            match = re.search(remote_regex, r)
+            if match:
+                remote_addr = match.group(1)
+
+        results = {
+            'protocols': list(protocols.keys()),
+            'anonymity': anonymity,
+            'timeout': timeout
+        }
+
+        if check_country:
+            results['country'] = country[0]
+            results['country_code'] = country[1]
+
+        if check_address:
+            results['remote_address'] = remote_addr
+
+        return results
+
+
+# CheckProxy().get_ip(proxy='')

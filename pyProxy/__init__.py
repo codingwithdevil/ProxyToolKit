@@ -19,7 +19,8 @@
 # THE SOFTWARE.
 __version__ = 'V1.0'
 
-from .pyProxy import scrapeProxy
+from .pyProxy import ScrapeProxy
+from .pyProxy import CheckProxy
 from .Exceptions import (
     ProxyTypeError
 )
