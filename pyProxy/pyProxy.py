@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 from .Exceptions import *
 import random
 from pyProxy.agents import user_agents
-import re
+import re, time
+from datetime import datetime
 
 class ScrapeProxy():
     def __init__(self):
@@ -135,6 +136,7 @@ class CheckProxy:
             auth = HTTPProxyAuth(user, password)
 
         try:
+            start_time = time.time()
             # Perform the request
             response = rqs.get(
                 url or random.choice(self.proxy_judges),
@@ -142,14 +144,14 @@ class CheckProxy:
                 auth=auth,
                 timeout=10  # Timeout in seconds
             )
-            
+            end_time = time.time()
             # Check if the HTTP status code is 200
             if response.status_code != 200:
                 return False
             
             # Calculate the request timeout in milliseconds (requests does not provide this directly)
-            timeout = 10000  # You can set a fixed value or measure it differently
-
+            timeout = (end_time - start_time) * 1000  # You can set a fixed value or measure it differently
+            timeout = str(timeout).split('.')[0]+'ms'
             # Return the response details
             return {
                 'timeout': timeout,
@@ -199,7 +201,7 @@ class CheckProxy:
             response = self.send_query(proxy=f"{protocol}://{proxy}")
             if response:
                 protocols[protocol] = response
-                timeout += response['timeout']
+                timeout = response['timeout']
 
         if not protocols:
             return False
@@ -211,7 +213,7 @@ class CheckProxy:
             country = self.get_country(proxy.split(':')[0])
         
         anonymity = self.parse_anonymity(r)
-        timeout = timeout // len(protocols)
+        # timeout = timeout // len(protocols)
 
         remote_addr = None
         if check_address:
@@ -223,7 +225,8 @@ class CheckProxy:
         results = {
             'protocols': list(protocols.keys()),
             'anonymity': anonymity,
-            'timeout': timeout
+            'timeout': timeout,
+            'status': 'success'
         }
 
         if check_country:
@@ -233,7 +236,20 @@ class CheckProxy:
         if check_address:
             results['remote_address'] = remote_addr
 
-        return results
+        now = datetime.now()
+        formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
+        res = {
+            'status': results.get('status', 'N/A'),
+            'proxy': proxy,
+            'protocols':results.get('protocols',''),
+            'country': results.get('country', 'N/A'),
+            'anonymity': results.get('anonymity', 'N/A'),
+            'latency': results.get('timeout', 'N/A'),
+            'last_checked': formatted_time,
+        }
+
+
+        return res
 
 
 # CheckProxy().get_ip(proxy='')
