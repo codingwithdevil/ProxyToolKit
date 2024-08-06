@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyProxy",
-    license='GPL-3.0 license',
+    license='MIT',
     version='1.0.0',
     author="Coding With Devil ( Binshan Iqbal )",
     author_email="codingwithdevil@gmail.com",
@@ -16,7 +16,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        'License :: OSI Approved :: GPL-3.0 license',
+        'License :: OSI Approved :: MIT License',
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.7",
