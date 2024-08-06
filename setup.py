@@ -12,7 +12,7 @@ setuptools.setup(
     description="Proxy Scraper and Checker",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/codingwithdevil/pyProxy.git",
+    url="https://github.com/codingwithdevil/ProxyToolKit.git",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
