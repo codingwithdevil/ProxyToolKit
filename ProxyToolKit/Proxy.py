@@ -3,7 +3,7 @@ from requests.auth import HTTPProxyAuth
 from bs4 import BeautifulSoup
 from .Exceptions import *
 import random
-from pyProxy.agents import user_agents
+from ProxyToolKit.agents import user_agents
 import re, time
 from datetime import datetime
 
