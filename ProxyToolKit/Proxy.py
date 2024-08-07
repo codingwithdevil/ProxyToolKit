@@ -246,6 +246,7 @@ class CheckProxy:
             'anonymity': results.get('anonymity', 'N/A'),
             'latency': results.get('timeout', 'N/A'),
             'last_checked': formatted_time,
+            'remote_address': results.get('remote_address', 'N/A')
         }
 
 
