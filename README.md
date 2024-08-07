@@ -9,6 +9,13 @@ also check Proxy and retun a dict as responce contain [ Porotocol type, Latency,
 ***ProxyToolKit Contain 2 Classes:*** ScrapeProxy, CheckProxy<br>
 ### ***ScrapeProxy*** Class
 This Class used to Scape Proxyies and retun as a list
+
+
+#### Install Via pip
+```pip install ProxyToolKit```
+
+
+
 ###### Usage:
 ```
 proxy = ScrapeProxy().scrape(type_)

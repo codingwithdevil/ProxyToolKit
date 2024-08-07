@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setuptools.setup(
     name="ProxyToolKit",
     license='MIT',
-    version='2.0.0',
+    version='2.0.1',
     author="Coding With Devil ( Binshan Iqbal )",
     author_email="codingwithdevil@gmail.com",
     description="Proxy Scraper and Checker",
