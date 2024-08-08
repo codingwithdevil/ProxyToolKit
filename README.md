@@ -21,7 +21,10 @@ This Class used to Scape Proxyies and retun as a list
 proxy = ScrapeProxy().scrape(type_)
 Print(proxy)
 "## responce"
-"[x.x.x.x:port,......]"
+[
+    {'ip': ip , 'port':port, 'protocols':protocols, 'country': '', 'anonymity': '', 'latency': '', 'last_checked': '', remote_address: '' },
+    {'ip': ip , 'port':port, 'protocols':protocols, 'country': '', 'anonymity': '', 'latency': '', 'last_checked': '', remote_address: '' },
+]
 
 ```
 ***Types : ['all','http','https','socks4','socks5']<br>
