@@ -17,7 +17,7 @@ class ScrapeProxy():
         self.session.headers.update({("User-Agent", random.choice(user_agents))})
 
 
-    def __proxyscrape(self,url):
+    def __proxyscrape(self,url,type_):
         proxys = []
         response = self.session.get(url)
         p = response.text
@@ -26,8 +26,29 @@ class ScrapeProxy():
         for proxy in p :
             if proxy not in proxy:
                 proxys.append(proxy.replace('\n',''))
-        return proxys
+
+        new_poxy =[]
+        for p in proxys:
+            builded_proxy = self.__build(p,type_)
+            new_poxy.append(builded_proxy)
+
+        return new_poxy
+    
+    def __build(self,proxy:str,type_):
         
+        proxy_data ={
+            'ip':proxy.split(':')[0],
+            'port':proxy.split(':')[1],
+            'protocols':type_,
+            'country': '',
+            'anonymity': '',
+            'latency': '',
+            'last_checked': '',
+            'remote_address': ''
+        }
+        return proxy_data
+
+
     def __proxyscrape_v3(self,type_):
         proxy_data = []
         res = rqs.get('https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&proxy_format=protocolipport&format=text')
@@ -47,8 +68,11 @@ class ScrapeProxy():
 
                 else:
                     pass
-        
-        return proxy_data
+        new_poxy =[]
+        for p in proxy_data:
+            builded_proxy = self.__build(p,type_)
+            new_poxy.append(builded_proxy)
+        return new_poxy
 
     def __us_proxy(self):
         proxys = []
@@ -70,7 +94,12 @@ class ScrapeProxy():
         for line in proxies:
             proxys.append(line)
 
-        return proxys
+        new_poxy =[]
+        for p in proxys:
+            builded_proxy = self.__build(p,type_='')
+            new_poxy.append(builded_proxy)
+
+        return new_poxy
 
     def __filter(self,proxys:list):
         new_proxy = []
@@ -88,9 +117,9 @@ class ScrapeProxy():
                 proxy_types = ['http','https','socks4','socks5']
                 p =[]
                 for p_type in proxy_types:
-                    proxyscrape = self.__proxyscrape(self.proxyscrape.format(p_type))
-                    proxyscrape_v2 = self.__proxyscrape(self.proxyscrape_v2.format(p_type))
-                    proxy_list_download = self.__proxyscrape(self.proxy_list_download.format(p_type))
+                    proxyscrape = self.__proxyscrape(self.proxyscrape.format(p_type),p_type)
+                    proxyscrape_v2 = self.__proxyscrape(self.proxyscrape_v2.format(p_type),p_type)
+                    proxy_list_download = self.__proxyscrape(self.proxy_list_download.format(p_type),p_type)
                     proxyscrape_v3 = self.__proxyscrape_v3(p_type)
                     p.append(proxyscrape)
                     p.append(proxyscrape_v2)
@@ -102,14 +131,16 @@ class ScrapeProxy():
                     proxy+=prox
                 proxy+= us_proxy
                 filtered_proxy = self.__filter(proxy)
+
             else:
-                proxyscrape = self.__proxyscrape(self.proxyscrape.format(type_))
-                proxyscrape_v2 = self.__proxyscrape(self.proxyscrape_v2.format(type_))
-                proxy_list_download = self.__proxyscrape(self.proxy_list_download.format(type_))
+                proxyscrape = self.__proxyscrape(self.proxyscrape.format(type_),type_)
+                proxyscrape_v2 = self.__proxyscrape(self.proxyscrape_v2.format(type_),type_)
+                proxy_list_download = self.__proxyscrape(self.proxy_list_download.format(type_),type_)
                 proxyscrape_v3 = self.__proxyscrape_v3(type_)
                 proxy = proxyscrape+proxyscrape_v2+proxyscrape_v3+proxy_list_download
                 filtered_proxy = self.__filter(proxy)
 
+            
             return filtered_proxy
         else:
             raise ProxyTypeError()
